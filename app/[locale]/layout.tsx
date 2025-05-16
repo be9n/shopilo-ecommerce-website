@@ -9,7 +9,10 @@ import Header from "@/components/layout/Header";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 import "swiper/css/autoplay";
+import "@/app/[locale]/css/banners.css";
+import PageLoader from "@/components/PageLoader";
 
 export const metadata: Metadata = {
   title: "Shopilo",
@@ -34,8 +37,9 @@ export default async function Layout({
       className={`${poppins.className} antialiased`}
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen relative">
         <NextIntlClientProvider>
+          <PageLoader />
           <Header />
           <main className="flex-grow">{children}</main>
         </NextIntlClientProvider>

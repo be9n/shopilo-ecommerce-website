@@ -2,11 +2,9 @@
 
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "@/app/[locale]/css/banners.css";
 import { useRef } from "react";
 import type { Swiper as SwiperType } from "swiper";
 
-// Import Swiper styles
 import Container from "@/components/ui/Container";
 import Link from "next/link";
 

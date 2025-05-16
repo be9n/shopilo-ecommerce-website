@@ -1,0 +1,92 @@
+/* Custom styles for category slider pagination */
+.category-slider-pagination {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  z-index: 10;
+  margin-top: 24px;
+}
+
+.category-slider-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #e5e5e5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-slider-bullet-active {
+  background-color: #000;
+  transform: scale(1.4);
+  margin: 0 4px
+}
+
+/* Optional: Hover effect */
+.category-slider-bullet:hover {
+  background-color: #ccc;
+}
+
+/* Hide pagination at large screens using media queries */
+@media (min-width: 1024px) {
+  .category-slider-pagination {
+    display: none;
+  }
+}
+
+/* Navigation buttons */
+.category-slider-next,
+.category-slider-prev {
+  background-color: #fff;
+  text-align: center;
+  color: #000;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 0.1px solid #eee;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .category-slider-next,
+  .category-slider-prev {
+    display: none;
+  }
+}
+
+.category-slider-next:hover,
+.category-slider-prev:hover {
+  background-color: #33312b;
+  color: #fff;
+  border: 0.1px solid #33312b;
+}
+
+.category-slider-next {
+  right: -20px;
+}
+
+.category-slider-prev {
+  left: -20px;
+}
+
+.category-slider-navigation-disabled {
+  background-color: #e5e5e5;
+  color: #999;
+  opacity: 0.5;
+  cursor: default;
+  border: none;
+}
+
+.category-slider-navigation-disabled:hover {
+  border: none;
+}
