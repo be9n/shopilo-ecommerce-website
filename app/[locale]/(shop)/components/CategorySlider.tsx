@@ -5,41 +5,40 @@ import React from "react";
 import CategoryCard from "./CategoryCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-
-import "./category-slider.css";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { Category } from "@/types/categories";
 
-const categories = [
+const categories: Category[] = [
   {
     id: 1,
-    name: "Category 1",
+    name: "Sportswear",
     image: "/images/categories/cat1.jpg",
   },
   {
     id: 2,
-    name: "Category 2",
+    name: "Clothes & Accessories",
     image: "/images/categories/cat2.jpg",
   },
   {
     id: 3,
-    name: "Category 3",
+    name: "Shoes",
     image: "/images/categories/cat3.jpg",
   },
   {
     id: 4,
-    name: "Category 4",
+    name: "Bags",
     image: "/images/categories/cat4.jpg",
   },
   {
     id: 5,
-    name: "Category 5",
+    name: "Accessories",
     image: "/images/categories/cat5.jpg",
   },
 ];
 
 export default function CategorySlider() {
   return (
-    <section className="py-6">
+    <section className="py-6" data-aos="fade-up">
       <Container className="">
         <div className="relative">
           <div className="category-slider-next">
@@ -68,7 +67,7 @@ export default function CategorySlider() {
                 slidesPerView: 1,
                 slidesPerGroup: 1,
               },
-              640: {
+              510: {
                 slidesPerView: 2,
                 slidesPerGroup: 2,
               },
@@ -77,7 +76,6 @@ export default function CategorySlider() {
                 slidesPerGroup: 2,
               },
             }}
-            className="category-slider pb-12"
           >
             {categories.map((category) => (
               <SwiperSlide key={category.id}>
