@@ -1,0 +1,9 @@
+.product-card-action-icon {
+  @apply flex items-center justify-center p-2 md:p-2.5 lg:p-3 bg-white rounded-full cursor-pointer
+  transition-[colors,scale] duration-300 hover:bg-black hover:text-white hover:scale-110;
+}
+
+.product-card-action-slide {
+  @apply lg:translate-x-full lg:opacity-0 lg:group-hover/card:translate-x-0
+   lg:group-hover/card:opacity-100 transition-[translate,opacity] duration-500;
+}
