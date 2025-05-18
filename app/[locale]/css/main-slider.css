@@ -1,56 +1,56 @@
-/* Custom styles for category slider pagination */
-.category-slider-pagination {
+/* Generic slider styles that can be reused across different sliders */
+.slider-pagination {
   @apply relative flex justify-center gap-1 z-10 mt-6;
 }
 
-.category-slider-bullet {
+.slider-bullet {
   @apply w-1.5 h-1.5 rounded-full bg-gray-200 cursor-pointer transition-all duration-300;
 }
 
-.category-slider-bullet-active {
+.slider-bullet-active {
   @apply bg-black scale-[1.4] mx-1;
 }
 
 /* Optional: Hover effect */
-.category-slider-bullet:hover {
+.slider-bullet:hover {
   @apply bg-gray-400;
 }
 
 /* Hide pagination at large screens using media queries */
 @media (min-width: 1024px) {
-  .category-slider-pagination {
+  .slider-pagination {
     @apply hidden;
   }
 }
 
 /* Navigation buttons */
-.category-slider-next,
-.category-slider-prev {
+.slider-next,
+.slider-prev {
   @apply bg-white text-center text-black rounded-full w-10 h-10 flex items-center justify-center 
          absolute top-1/2 -translate-y-1/2 z-20 cursor-pointer transition-all duration-300
          border border-gray-100 shadow-sm;
 }
 
 @media (max-width: 1024px) {
-  .category-slider-next,
-  .category-slider-prev {
+  .slider-next,
+  .slider-prev {
     @apply hidden;
   }
 }
 
-.category-slider-next:not(.category-slider-navigation-disabled):hover,
-.category-slider-prev:not(.category-slider-navigation-disabled):hover {
+.slider-next:not(.slider-navigation-disabled):hover,
+.slider-prev:not(.slider-navigation-disabled):hover {
   @apply bg-[#33312b] text-white border border-[#33312b];
 }
 
-.category-slider-next {
+.slider-next {
   @apply right-[-20px];
 }
 
-.category-slider-prev {
+.slider-prev {
   @apply left-[-20px];
 }
 
-.category-slider-navigation-disabled {
+.slider-navigation-disabled {
   @apply bg-gray-200 text-gray-500 opacity-50 cursor-default border-none;
-}
+} 

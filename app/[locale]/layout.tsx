@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { poppins } from "@/utils/fonts";
-import Header from "@/components/layout/Header";
-
-import "@/app/[locale]/css/banners.css";
-import PageLoader from "@/components/PageLoader";
-import AOSProvider from "@/components/AOSProvider";
+import Providers from "@/providers/providers";
 
 export const metadata: Metadata = {
   title: "Shopilo",
@@ -34,13 +30,7 @@ export default async function Layout({
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
       <body className="flex flex-col min-h-screen relative">
-        <NextIntlClientProvider>
-          <AOSProvider>
-            <PageLoader />
-            <Header />
-            <main className="flex-grow">{children}</main>
-          </AOSProvider>
-        </NextIntlClientProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

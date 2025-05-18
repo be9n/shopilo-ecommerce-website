@@ -11,11 +11,11 @@ export default function ProductPrice({
 }: ProductPriceProps) {
   return discountPrice ? (
     <div className="flex items-center gap-2">
-      <Price price={discountPrice} type="with-discount" />
-      <Price price={price} type="without-discount" />
+      <Price price={discountPrice} type="currentPrice" />
+      <Price price={price} type="oldPrice" />
     </div>
   ) : (
-    <Price price={price} type="without-discount" />
+    <Price price={price} type="currentPrice" />
   );
 }
 
@@ -24,15 +24,15 @@ const Price = ({
   type,
 }: {
   price: number;
-  type: "with-discount" | "without-discount";
+  type: "currentPrice" | "oldPrice";
 }) => {
   return (
     <span
       className={cn(
         "text-primary text-sm font-medium",
-        type === "without-discount" &&
+        type === "oldPrice" &&
           "line-through text-gray-500 text-xs md:text-sm lg:text-base",
-        type === "with-discount" &&
+        type === "currentPrice" &&
           "text-primary text-sm md:text-base lg:text-md"
       )}
     >
