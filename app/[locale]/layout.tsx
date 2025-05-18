@@ -3,7 +3,7 @@ import "./globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { poppins } from "@/app/utils/fonts";
+import { poppins } from "@/utils/fonts";
 import Header from "@/components/layout/Header";
 
 import "@/app/[locale]/css/banners.css";
