@@ -1,20 +1,8 @@
-import {
-  Heart,
-  Search,
-  ShoppingBag,
-  User,
-  LucideIcon,
-  XIcon,
-} from "lucide-react";
+"use client";
+
+import { Heart, Search, ShoppingBag, LucideIcon, User } from "lucide-react";
 import React from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../ui/sheet";
+import LoginFormSheet from "../LoginFormSheet";
 
 export default function Icons() {
   return (
@@ -30,37 +18,17 @@ export default function Icons() {
 }
 
 const SearchIcon = () => {
-  return <MainIcon icon={Search} />;
+  return <MainHeaderIcon icon={Search} />;
 };
 
 const ProfileIcon = () => {
-  return (
-    <Sheet>
-      <SheetTrigger>
-        <MainIcon icon={User} />
-      </SheetTrigger>
-      <SheetContent
-        side="right"
-        className="max-w-[300px]"
-        closeButton={
-          <XIcon className="size-5 hover:text-primary transition-all duration-300 cursor-pointer" />
-        }
-      >
-        <SheetHeader>
-          <SheetTitle>Login Form</SheetTitle>
-          <SheetDescription>
-            Here is going to be the login form
-          </SheetDescription>
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
-  );
+  return <LoginFormSheet trigger={<MainHeaderIcon icon={User} />} />;
 };
 
 const FavoriteIcon = () => {
   return (
     <BadgeIcon count={0}>
-      <MainIcon icon={Heart} />
+      <MainHeaderIcon icon={Heart} />
     </BadgeIcon>
   );
 };
@@ -68,12 +36,12 @@ const FavoriteIcon = () => {
 const CartIcon = () => {
   return (
     <BadgeIcon count={0}>
-      <MainIcon icon={ShoppingBag} />
+      <MainHeaderIcon icon={ShoppingBag} />
     </BadgeIcon>
   );
 };
 
-const MainIcon = ({
+const MainHeaderIcon = ({
   icon: Icon,
   className = "",
   strokeWidth = 1.5,
