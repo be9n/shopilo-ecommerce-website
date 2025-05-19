@@ -1,14 +1,16 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { User } from "./types";
-import { AUTH_TOKEN_KEY, USER_DATA_KEY } from "./client";
+import { USER_DATA_KEY } from "./client";
+
+// Auth token cookie key
 
 /**
- * Server-side function to get the current authentication state
+ * Get the current authentication state from server cookies
  */
 export async function getServerAuthState() {
-  const { token, userData } = await getServerSideCookies();
+  const token = await getAuthToken();
+  const userData = await getServerUserData();
   const isAuthenticated = !!token && !!userData;
 
   return {
@@ -18,42 +20,52 @@ export async function getServerAuthState() {
   };
 }
 
-// Server-side cookie helpers
-export async function getServerSideCookies(): Promise<{
-  token: string | null;
-  userData: User | null;
-}> {
-  const token = await getAccessToken();
-  const userData = await getUserData();
+/**
+ * Set HTTP-only cookie containing the auth token
+ * This is more secure as JavaScript cannot access it
+ */
+export async function setAuthCookie(token: string) {
+  const cookieStore = await cookies();
 
-  return {
-    token: token || null,
-    userData: userData || null,
-  };
+  cookieStore.set("auth_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    path: "/",
+    sameSite: "strict",
+  });
 }
 
-export const getAccessToken = async () => {
+/**
+ * Get the authentication token from HTTP-only cookie
+ */
+export async function getAuthToken() {
   const cookieStore = await cookies();
-  const token = cookieStore.get(AUTH_TOKEN_KEY)?.value;
+  return cookieStore.get("auth_token")?.value;
+}
 
-  return token;
-};
-
-const getUserData = async () => {
+/**
+ * Get user data from server-side cookies
+ */
+async function getServerUserData() {
   const cookieStore = await cookies();
-  const userDataStr = cookieStore.get(USER_DATA_KEY)?.value || null;
+  const userDataStr = cookieStore.get(USER_DATA_KEY)?.value;
+
+  if (!userDataStr) return null;
 
   try {
-    const userData = userDataStr ? JSON.parse(userDataStr) : null;
-
-    return userData;
+    return JSON.parse(userDataStr);
   } catch {
-    await clearServerAuthState();
+    await clearAuthCookies();
+    return null;
   }
-};
+}
 
-export async function clearServerAuthState() {
+/**
+ * Clear all authentication cookies
+ */
+export async function clearAuthCookies() {
   const cookieStore = await cookies();
   cookieStore.delete("auth_token");
-  cookieStore.delete("user_data");
+  cookieStore.delete(USER_DATA_KEY);
 }

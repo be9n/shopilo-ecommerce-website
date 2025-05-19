@@ -1,8 +1,8 @@
 import axios from "axios";
-import { clearAuthCookies } from "./client";
+import { clearClientCookies } from "./client";
 import { ApiError, AuthResponse, LoginCredentials } from "./types";
 import { redirect } from "next/navigation";
-import { getAccessToken } from "./server";
+import { getAuthToken } from "./server";
 
 const API_URL = "http://localhost:8000/api/customer";
 
@@ -13,12 +13,16 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  // Include cookies in requests
+  withCredentials: true,
 });
 
-// Add interceptor to handle auth token
+// Handle auth token in requests
 api.interceptors.request.use(
   async (config) => {
-    const token = await getAccessToken();
+    // Token is sent automatically via HTTP-only cookie
+    // Adding to header for APIs that expect it there
+    const token = await getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,18 +31,16 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Add interceptor to handle auth errors
+// Handle auth errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status == 401 || error.response?.status == 403) {
-      if (typeof window !== "undefined") {
-        window.location.href = "/logout";
-      } else {
-        redirect("/logout");
-      }
+    // Handle authentication errors
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      redirect("/logout");
     }
 
+    // Format API errors
     if (axios.isAxiosError(error) && error.response) {
       const apiError = error.response.data as ApiError;
       return Promise.reject(apiError);
@@ -48,7 +50,9 @@ api.interceptors.response.use(
   }
 );
 
-// Auth API functions
+/**
+ * Authenticate user with credentials
+ */
 export async function loginUser(
   credentials: LoginCredentials
 ): Promise<AuthResponse["data"]> {
@@ -64,17 +68,22 @@ export async function loginUser(
   }
 }
 
+/**
+ * Log user out
+ */
 export async function logoutUser(): Promise<void> {
   try {
     await api.post("/auth/logout");
   } catch (error: unknown) {
     console.error("Logout error:", error);
   } finally {
-    clearAuthCookies();
+    clearClientCookies();
   }
 }
 
-// Function to check if user is authenticated on the server side
+/**
+ * Check if user is authenticated
+ */
 export async function checkAuthStatus(): Promise<boolean> {
   try {
     await api.get("/auth/check");
@@ -84,7 +93,6 @@ export async function checkAuthStatus(): Promise<boolean> {
   }
 }
 
-// Create a function that can be used for authenticated API calls
 export default api;
 
 // Export a wrapper for server-side API calls
@@ -107,9 +115,9 @@ export async function serverSideApiCall(
     const response = await fetch(`${API_URL}${endpoint}`, {
       method,
       headers,
+      credentials: "include", // Include cookies in the request
       ...(data && { body: JSON.stringify(data) }),
     });
-    console.log(response);
 
     // Handle 401 errors
     if (response.status === 401) {

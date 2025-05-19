@@ -3,20 +3,23 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
+import { loginSchema, type LoginFormValues } from "@/lib/schemas/auth";
+import { useAuth } from "@/context/AuthProvider";
+import { serverLogin } from "@/app/actions/auth";
 import { Input } from "./ui/input";
 import { Form, FormField, FormItem, FormControl, FormMessage } from "./ui/form";
 import { Button } from "./ui/button";
-import { loginSchema, type LoginFormValues } from "@/lib/schemas/auth";
-import { useAuth } from "@/context/AuthProvider";
-import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Loader2 } from "lucide-react";
 import { ApiError } from "@/lib/auth/types";
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
-  const { login } = useAuth();
+  const { setUserData } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams?.get("callbackUrl") || "/";
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -26,18 +29,28 @@ export default function LoginForm() {
     },
   });
 
-  const {
-    formState: { isSubmitting },
-  } = form;
+  const { isSubmitting } = form.formState;
 
   async function onSubmit(data: LoginFormValues) {
     setError(null);
     try {
-      await login(data);
-      router.push("/");
+      // Use server action for authentication
+      const result = await serverLogin(data);
+
+      if (!result.success) {
+        setError(result.error || "Login failed. Please try again.");
+        return;
+      }
+
+      // Update client-side state with user data
+      setUserData(result.user);
+
+      // Refresh and redirect
+      router.refresh();
+      router.push(decodeURI(callbackUrl));
     } catch (error) {
       const apiError = error as ApiError;
-      setError(apiError.message);
+      setError(apiError.message || "Login failed. Please try again.");
     }
   }
 
@@ -58,10 +71,11 @@ export default function LoginForm() {
               <FormItem>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="email"
                     placeholder="Email*"
                     className="shadow-none py-6 px-4"
                     disabled={isSubmitting}
+                    autoComplete="email"
                     {...field}
                   />
                 </FormControl>
@@ -80,6 +94,7 @@ export default function LoginForm() {
                     placeholder="Password*"
                     className="shadow-none py-6 px-4"
                     disabled={isSubmitting}
+                    autoComplete="current-password"
                     {...field}
                   />
                 </FormControl>
@@ -94,7 +109,7 @@ export default function LoginForm() {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="animate-spin translate-x-1/2 translate-y-1/2" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Logging in...
               </>
             ) : (
