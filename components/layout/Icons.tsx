@@ -1,15 +1,12 @@
-"use client";
-
-import { Heart, Search, ShoppingBag, LucideIcon, User } from "lucide-react";
-import React from "react";
-import LoginFormSheet from "../LoginFormSheet";
+import { Heart, Search, ShoppingBag, LucideIcon } from "lucide-react";
+import Profile from "./Profile";
 
 export default function Icons() {
   return (
     <div className="flex items-center gap-4">
       <SearchIcon />
       <div className="hidden md:flex items-center gap-4">
-        <ProfileIcon />
+        <Profile />
         <FavoriteIcon />
       </div>
       <CartIcon />
@@ -19,10 +16,6 @@ export default function Icons() {
 
 const SearchIcon = () => {
   return <MainHeaderIcon icon={Search} />;
-};
-
-const ProfileIcon = () => {
-  return <LoginFormSheet trigger={<MainHeaderIcon icon={User} />} />;
 };
 
 const FavoriteIcon = () => {
@@ -41,7 +34,7 @@ const CartIcon = () => {
   );
 };
 
-const MainHeaderIcon = ({
+export const MainHeaderIcon = ({
   icon: Icon,
   className = "",
   strokeWidth = 1.5,

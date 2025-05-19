@@ -1,14 +1,10 @@
 "use client";
 
+import { useAuth } from "@/context/AuthProvider";
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
 
 export default function PageLoader() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
+  const { isLoading } = useAuth();
 
   return (
     <div

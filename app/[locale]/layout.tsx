@@ -4,6 +4,8 @@ import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { poppins } from "@/utils/fonts";
+
+import "@/app/[locale]/css/banners.css";
 import Providers from "@/providers/providers";
 
 export const metadata: Metadata = {
