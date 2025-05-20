@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { USER_DATA_KEY } from "./client";
 
 // Auth token cookie key
+const AUTH_TOKEN_KEY = "auth_token";
 
 /**
  * Get the current authentication state from server cookies
@@ -27,12 +28,12 @@ export async function getServerAuthState() {
 export async function setAuthCookie(token: string) {
   const cookieStore = await cookies();
 
-  cookieStore.set("auth_token", token, {
+  cookieStore.set(AUTH_TOKEN_KEY, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: "/",
-    sameSite: "strict",
+    sameSite: "lax",
   });
 }
 
@@ -41,7 +42,20 @@ export async function setAuthCookie(token: string) {
  */
 export async function getAuthToken() {
   const cookieStore = await cookies();
-  return cookieStore.get("auth_token")?.value;
+  return cookieStore.get(AUTH_TOKEN_KEY)?.value;
+}
+
+/**
+ * Get all auth cookies as header string for forwarding to API
+ * Used for server components to forward cookies to backend
+ */
+export async function getAuthCookieHeader(): Promise<string> {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get(AUTH_TOKEN_KEY);
+
+  if (!authToken) return "";
+
+  return `${AUTH_TOKEN_KEY}=${authToken.value}`;
 }
 
 /**
@@ -66,6 +80,6 @@ async function getServerUserData() {
  */
 export async function clearAuthCookies() {
   const cookieStore = await cookies();
-  cookieStore.delete("auth_token");
+  cookieStore.delete(AUTH_TOKEN_KEY);
   cookieStore.delete(USER_DATA_KEY);
 }

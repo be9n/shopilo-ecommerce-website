@@ -9,20 +9,6 @@ export interface AuthState {
   isLoading: boolean;
 }
 
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data: {
-    user: User;
-    access_token: string;
-  };
-}
-
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
 export interface ApiError {
   success: boolean;
   message: string;
@@ -30,3 +16,4 @@ export interface ApiError {
   code?: number;
   errors?: Record<string, string[]>;
 }
+

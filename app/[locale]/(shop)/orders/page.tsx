@@ -1,21 +1,25 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import api from "@/lib/auth/api";
+import { getUser } from "@/app/actions/auth";
 import { useEffect, useState } from "react";
 
 export default function OrdersPage() {
   const [data, setData] = useState();
 
   const fetchData = async () => {
-    const response = await api.get("/auth/me");
+    const response = await getUser();
     console.log(response);
-    
-    setData(response.data);
+
+    setData(response);
   };
 
   useEffect(() => {
-    fetchData();
+    try {
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   return (

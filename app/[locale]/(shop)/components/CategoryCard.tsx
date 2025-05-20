@@ -22,14 +22,14 @@ export default function CategoryCard({ category }: CategoryCardProps) {
       />
 
       <div
-        className="group/button absolute bottom-10 left-1/2 -translate-x-1/2 py-4 px-8 
-        bg-white rounded-full w-[170px] text-center hover:bg-black hover:text-white transition-all duration-300"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 py-4 px-8 
+        bg-white rounded-full text-center group-hover/card:bg-black group-hover/card:text-white transition-all duration-300"
       >
         <div className="flex items-center justify-center gap-1">
           <span className="text-sm sm:text-base">{category.name}</span>
           <ArrowUpRight
             strokeWidth={1.5}
-            className="text-white w-0 h-6 scale-0 group-hover/button:w-6 group-hover/button:scale-100 transition-all duration-300 shrink-0"
+            className="text-white w-0 scale-0 group-hover/card:w-4 md:group-hover/card:w-5 group-hover/card:scale-100 transition-all duration-300 shrink-0"
           />
         </div>
       </div>

@@ -46,7 +46,7 @@ export const MainHeaderIcon = ({
   return (
     <Icon
       strokeWidth={strokeWidth}
-      className={`size-5 md:size-6 hover:text-primary cursor-pointer transition-all duration-300 ${className}`}
+      className={`size-5 md:size-6 hover:text-primary cursor-pointer transition-all duration-300 group-hover/badge:text-primary ${className}`}
     />
   );
 };
@@ -59,9 +59,12 @@ const BadgeIcon = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="relative">
+    <div className="relative cursor-pointer group/badge">
       {children}
-      <span className="absolute -top-1 -right-1 bg-primary text-white text-xs size-4 rounded-full flex items-center justify-center">
+      <span
+        className="absolute -top-1 -right-1 bg-primary text-white text-xs size-4 rounded-full
+      flex items-center justify-center select-none"
+      >
         {count}
       </span>
     </div>

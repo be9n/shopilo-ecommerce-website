@@ -4,12 +4,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AuthState, User } from "@/lib/auth/types";
 import { getUserData, setUserCookie } from "@/lib/auth/client";
-import api from "@/lib/auth/api";
-import { serverLogout } from "@/app/actions/auth";
+import api from "@/lib/api";
+import { logout } from "@/app/actions/auth";
 
 interface AuthContextType extends AuthState {
   setUserData: (user: User) => void;
-  logout: () => Promise<void>;
+  signout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
@@ -66,10 +66,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Logout user
-  const logout = async (): Promise<void> => {
+  const signout = async (): Promise<void> => {
     try {
       // Use server action to logout and clear HTTP-only cookies
-      await serverLogout();
+      await logout();
 
       // Clear client-side state and cookies
       setAuthState({
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading: false,
       });
 
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
       setAuthState({
@@ -113,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         ...authState,
         setUserData,
-        logout,
+        signout,
         refreshUser,
       }}
     >

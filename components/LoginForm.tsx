@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginSchema, type LoginFormValues } from "@/lib/schemas/auth";
 import { useAuth } from "@/context/AuthProvider";
-import { serverLogin } from "@/app/actions/auth";
+import { login } from "@/app/actions/auth";
 import { Input } from "./ui/input";
 import { Form, FormField, FormItem, FormControl, FormMessage } from "./ui/form";
 import { Button } from "./ui/button";
@@ -34,22 +34,16 @@ export default function LoginForm() {
   async function onSubmit(data: LoginFormValues) {
     setError(null);
     try {
-      // Use server action for authentication
-      const result = await serverLogin(data);
+      const user = await login(data);
 
-      if (!result.success) {
-        setError(result.error || "Login failed. Please try again.");
-        return;
-      }
+      setUserData(user);
 
-      // Update client-side state with user data
-      setUserData(result.user);
-
-      // Refresh and redirect
-      router.refresh();
+      // router.refresh();
       router.push(decodeURI(callbackUrl));
     } catch (error) {
       const apiError = error as ApiError;
+      console.log(error);
+
       setError(apiError.message || "Login failed. Please try again.");
     }
   }

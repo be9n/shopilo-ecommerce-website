@@ -39,6 +39,8 @@ export async function middleware(request: NextRequest) {
     protectedRoutes.some((route) => path.startsWith(route))
   ) {
     // Redirect unauthenticated users to login
+    await clearAuthCookies();
+    homeUrl.searchParams.set("resync_user_state", "true");
     homeUrl.searchParams.set("callbackUrl", encodeURI(request.url));
     return NextResponse.redirect(homeUrl);
   }
