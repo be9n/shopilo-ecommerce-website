@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Container from "../ui/Container";
+import Container from "../Container";
 import { cn } from "@/lib/utils";
 
 export default function Header({

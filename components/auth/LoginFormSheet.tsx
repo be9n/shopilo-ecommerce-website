@@ -7,8 +7,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
-import { Separator } from "./ui/separator";
+} from "../ui/sheet";
+import { Separator } from "../ui/separator";
 import LoginForm from "./LoginForm";
 
 type LoginFormSheetProps = {

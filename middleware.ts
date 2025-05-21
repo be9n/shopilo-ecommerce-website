@@ -11,7 +11,7 @@ const intlMiddleware = createMiddleware(routing);
 const publicRoutes = ["/login", "/register", "/forgot-password"];
 
 // Routes that require authentication
-const protectedRoutes = ["/account", "/orders", "/checkout"];
+const protectedRoutes = ["/orders", "/checkout"];
 
 export async function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   ) {
     // Redirect unauthenticated users to login
     await clearAuthCookies();
-    homeUrl.searchParams.set("resync_user_state", "true");
+    homeUrl.searchParams.set("resyncUserState", "true");
     homeUrl.searchParams.set("callbackUrl", encodeURI(request.url));
     return NextResponse.redirect(homeUrl);
   }
@@ -48,7 +48,7 @@ export async function middleware(request: NextRequest) {
   // Handle logout
   if (path === "/logout") {
     await clearAuthCookies();
-    homeUrl.searchParams.set("resync_user_state", "true");
+    homeUrl.searchParams.set("resyncUserState", "true");
     return NextResponse.redirect(homeUrl);
   }
 

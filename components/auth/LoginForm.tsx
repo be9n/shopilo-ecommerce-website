@@ -3,23 +3,31 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { loginSchema, type LoginFormValues } from "@/lib/schemas/auth";
 import { useAuth } from "@/context/AuthProvider";
-import { login } from "@/app/actions/auth";
-import { Input } from "./ui/input";
-import { Form, FormField, FormItem, FormControl, FormMessage } from "./ui/form";
-import { Button } from "./ui/button";
-import { Alert, AlertDescription } from "./ui/alert";
+import { Input } from "../ui/input";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormMessage,
+} from "../ui/form";
+import { Button } from "../ui/button";
+import { Alert, AlertDescription } from "../ui/alert";
 import { Loader2 } from "lucide-react";
-import { ApiError } from "@/lib/auth/types";
+import SocialAuthButtons from "./SocialAuthButtons";
+import { ApiError } from "@/types/global";
 
 export default function LoginForm() {
+  const [isSocialLoading, setIsSocialLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setUserData } = useAuth();
+  const { signin } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get("callbackUrl") || "/";
+  const currentPath = usePathname();
+  const callbackUrl = searchParams?.get("callbackUrl") || currentPath;
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -34,11 +42,8 @@ export default function LoginForm() {
   async function onSubmit(data: LoginFormValues) {
     setError(null);
     try {
-      const user = await login(data);
+      await signin({ type: "credentials", credentials: data });
 
-      setUserData(user);
-
-      // router.refresh();
       router.push(decodeURI(callbackUrl));
     } catch (error) {
       const apiError = error as ApiError;
@@ -68,7 +73,7 @@ export default function LoginForm() {
                     type="email"
                     placeholder="Email*"
                     className="shadow-none py-6 px-4"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isSocialLoading}
                     autoComplete="email"
                     {...field}
                   />
@@ -87,7 +92,7 @@ export default function LoginForm() {
                     type="password"
                     placeholder="Password*"
                     className="shadow-none py-6 px-4"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isSocialLoading}
                     autoComplete="current-password"
                     {...field}
                   />
@@ -99,7 +104,7 @@ export default function LoginForm() {
           <Button
             type="submit"
             className="w-full cursor-pointer"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isSocialLoading}
           >
             {isSubmitting ? (
               <>
@@ -112,6 +117,10 @@ export default function LoginForm() {
           </Button>
         </form>
       </Form>
+      <SocialAuthButtons
+        setIsSocialLoading={setIsSocialLoading}
+        setError={setError}
+      />
     </div>
   );
 }

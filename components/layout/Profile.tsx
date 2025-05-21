@@ -1,6 +1,6 @@
 "use client";
 
-import LoginFormSheet from "../LoginFormSheet";
+import LoginFormSheet from "../auth/LoginFormSheet";
 import { MainHeaderIcon } from "./Icons";
 import { User } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";

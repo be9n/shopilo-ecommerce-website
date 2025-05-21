@@ -2,15 +2,18 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { AuthState, User } from "@/lib/auth/types";
-import { getUserData, setUserCookie } from "@/lib/auth/client";
-import api from "@/lib/api";
-import { logout } from "@/app/actions/auth";
+import { AuthState, LoginResponse } from "@/types/auth";
+import { login, logout, socialLogin } from "@/api-services/auth";
+import { getServerUserData, setAuthCookies } from "@/lib/auth/server";
+import { LoginFormValues } from "@/lib/schemas/auth";
+
+type SignInParams =
+  | { type: "credentials"; credentials: LoginFormValues }
+  | { type: "social"; provider: string; token: string };
 
 interface AuthContextType extends AuthState {
-  setUserData: (user: User) => void;
   signout: () => Promise<void>;
-  refreshUser: () => Promise<void>;
+  signin: (params: SignInParams) => Promise<void>;
 }
 
 const initialAuthState: AuthState = {
@@ -23,10 +26,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
   const searchParams = useSearchParams();
-  const resyncUserState = searchParams.get("resync_user_state");
+  const resyncUserState = searchParams?.get("resyncUserState");
   const router = useRouter();
 
-  // Initialize auth state from cookies
   useEffect(() => {
     syncUserState();
   }, []);
@@ -38,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [resyncUserState]);
 
   const syncUserState = async () => {
-    const userData = getUserData();
+    const userData = await getServerUserData();
 
     if (userData) {
       setAuthState({
@@ -53,25 +55,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Set user data from server login result
-  const setUserData = (user: User): void => {
-    // Update client state
-    setAuthState({
-      user,
-      isLoading: false,
-    });
-
-    // Store user data in client cookie
-    setUserCookie(user);
+  const loginStrategies = {
+    credentials: async (
+      credentials: LoginFormValues
+    ): Promise<LoginResponse> => {
+      return await login(credentials);
+    },
+    social: async (provider: string, token: string): Promise<LoginResponse> => {
+      return await socialLogin(provider, token);
+    },
   };
 
-  // Logout user
+  const signin = async (params: SignInParams): Promise<void> => {
+    let response: LoginResponse;
+
+    if (params.type === "credentials") {
+      response = await loginStrategies.credentials(params.credentials);
+    } else {
+      response = await loginStrategies.social(params.provider, params.token);
+    }
+
+    await setAuthCookies(response.data.access_token, response.data.user);
+
+    setAuthState({
+      user: response.data.user,
+      isLoading: false,
+    });
+  };
+
   const signout = async (): Promise<void> => {
     try {
-      // Use server action to logout and clear HTTP-only cookies
       await logout();
 
-      // Clear client-side state and cookies
       setAuthState({
         ...initialAuthState,
         isLoading: false,
@@ -87,34 +102,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Refresh user data
-  const refreshUser = async (): Promise<void> => {
-    if (!authState.user) return;
-
-    try {
-      const { data } = await api.get("/auth/me");
-      if (data.success && data.data.user) {
-        const user = data.data.user;
-
-        // Update state and cookies
-        setAuthState((prev) => ({
-          ...prev,
-          user,
-        }));
-        setUserCookie(user);
-      }
-    } catch {
-      // Error handling is already in the interceptor
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
         ...authState,
-        setUserData,
         signout,
-        refreshUser,
+        signin,
       }}
     >
       {children}

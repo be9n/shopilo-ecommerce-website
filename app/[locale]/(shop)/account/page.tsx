@@ -1,10 +1,10 @@
-import { getAccount } from "@/app/actions/accout";
 import LogoutButton from "@/components/layout/LogoutButton";
-import Container from "@/components/ui/Container";
+import Container from "@/components/Container";
 import { getServerAuthState } from "@/lib/auth/server";
+import { getUser } from "@/api-services/auth";
 
 export default async function AccountPage() {
-  const { data: response } = await getAccount();
+  const { data: response } = await getUser();
   const data = response;
   console.log(data);
 

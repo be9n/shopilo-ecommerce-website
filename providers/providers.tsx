@@ -1,14 +1,18 @@
+"use client";
+
 import { ReactNode } from "react";
-import { NextIntlClientProvider } from "next-intl";
 import AOSProvider from "./AOSProvider";
 import { AuthProvider } from "@/context/AuthProvider";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <NextIntlClientProvider>
-      <AOSProvider>
+    <AOSProvider>
+      <GoogleOAuthProvider
+        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}
+      >
         <AuthProvider>{children}</AuthProvider>
-      </AOSProvider>
-    </NextIntlClientProvider>
+      </GoogleOAuthProvider>
+    </AOSProvider>
   );
 }

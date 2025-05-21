@@ -1,7 +1,7 @@
 import axios from "axios";
-import { ApiError } from "./auth/types";
 import { redirect } from "next/navigation";
 import { getAuthToken } from "./auth/server";
+import { ApiError } from "@/types/global";
 
 const API_URL = "http://localhost:8000/api/customer";
 

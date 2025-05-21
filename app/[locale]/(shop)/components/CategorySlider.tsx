@@ -6,7 +6,7 @@ import { Category } from "@/types/categories";
 import MainSlider, {
   BreakpointsConfig,
 } from "@/app/[locale]/(shop)/components/MainSlider";
-import Container from "@/components/ui/Container";
+import Container from "@/components/Container";
 
 const categories: Category[] = [
   {

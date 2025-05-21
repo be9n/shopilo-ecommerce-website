@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { getUser } from "@/app/actions/auth";
+import { getUser } from "@/api-services/auth";
 import { useEffect, useState } from "react";
 
 export default function OrdersPage() {

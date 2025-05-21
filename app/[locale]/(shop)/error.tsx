@@ -1,6 +1,6 @@
 "use client"; // Error boundaries must be Client Components
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/Container";
 import { useEffect } from "react";
 
 export default function Error({

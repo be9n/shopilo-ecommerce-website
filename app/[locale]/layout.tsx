@@ -3,10 +3,11 @@ import "./globals.css";
 import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { poppins } from "@/utils/fonts";
+import { poppins } from "@/lib/fonts";
 
 import "@/app/[locale]/css/banners.css";
 import Providers from "@/providers/providers";
+import ServerSideProviders from "@/providers/serverSideProviders";
 
 export const metadata: Metadata = {
   title: "Shopilo",
@@ -32,7 +33,9 @@ export default async function Layout({
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
       <body className="flex flex-col min-h-screen relative">
-        <Providers>{children}</Providers>
+        <ServerSideProviders>
+          <Providers>{children}</Providers>
+        </ServerSideProviders>
       </body>
     </html>
   );

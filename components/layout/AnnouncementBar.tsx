@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FaFacebook, FaInstagram, FaTwitter, FaSnapchat } from "react-icons/fa";
-import Container from "../ui/Container";
+import Container from "../Container";
 
 const socialLinks = [
   {

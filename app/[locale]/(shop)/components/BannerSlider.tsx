@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useRef } from "react";
 import type { Swiper as SwiperType } from "swiper";
 
-import Container from "@/components/ui/Container";
+import Container from "@/components/Container";
 import Link from "next/link";
 
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
