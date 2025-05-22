@@ -1,8 +1,8 @@
 "use server";
 
+import { AUTH_TOKEN_KEY, USER_DATA_KEY } from "@/constants";
 import { User } from "@/types/auth";
 import { cookies } from "next/headers";
-import { AUTH_TOKEN_KEY, USER_DATA_KEY } from "@/constants/auth";
 
 export async function getServerAuthState() {
   const token = await getAuthToken();
