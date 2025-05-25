@@ -1,19 +1,16 @@
+import { Category } from "@/types/categories";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 
 type CategoryCardProps = {
-  category: {
-    id: number;
-    name: string;
-    image: string;
-  };
+  category: Category;
 };
 
 export default function CategoryCard({ category }: CategoryCardProps) {
   return (
     <div className="select-none group/card relative aspect-[3/3.3] max-w-[460px] max-h-[505px] overflow-hidden rounded-lg cursor-pointer">
       <Image
-        src={category.image}
+        src={category.image_url}
         alt={category.name}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

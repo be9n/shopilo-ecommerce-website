@@ -2,41 +2,17 @@
 
 import React from "react";
 import CategoryCard from "./CategoryCard";
-import { Category } from "@/types/categories";
 import MainSlider, {
   BreakpointsConfig,
 } from "@/app/[locale]/(shop)/components/MainSlider";
 import Container from "@/components/Container";
+import { Category } from "@/types/categories";
 
-const categories: Category[] = [
-  {
-    id: 1,
-    name: "Sportswear",
-    image: "/images/categories/cat1.jpg",
-  },
-  {
-    id: 2,
-    name: "Clothes & Accessories",
-    image: "/images/categories/cat2.jpg",
-  },
-  {
-    id: 3,
-    name: "Shoes",
-    image: "/images/categories/cat3.jpg",
-  },
-  {
-    id: 4,
-    name: "Bags",
-    image: "/images/categories/cat4.jpg",
-  },
-  {
-    id: 5,
-    name: "Accessories",
-    image: "/images/categories/cat5.jpg",
-  },
-];
-
-export default function CategorySlider() {
+export default function CategorySlider({
+  categories,
+}: {
+  categories: Category[];
+}) {
   const breakpoints: BreakpointsConfig = {
     0: {
       slidesPerView: 1,

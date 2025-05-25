@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { SliderProduct } from "@/types/products";
 import ProductCard from "./ProductCard";
 import MainSlider, {
   BreakpointsConfig,
 } from "@/app/[locale]/(shop)/components/MainSlider";
 import Container from "@/components/Container";
+import { Product } from "@/types/products";
 
 type ProductSliderProps = {
-  products: SliderProduct[];
+  products: Product[];
 };
 
 export default function ProductSlider({ products }: ProductSliderProps) {

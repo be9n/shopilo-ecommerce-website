@@ -1,12 +1,12 @@
 "use client";
 
-import { SliderProduct } from "@/types/products";
+import { Product } from "@/types/products";
 import Image from "next/image";
-import ProductPrice from "./ProductPrice";
 import ProductCardActions from "./ProductCardActions";
+import ProductPrice from "./ProductPrice";
 
 type ProductCardProps = {
-  product: SliderProduct;
+  product: Product;
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -17,17 +17,17 @@ export default function ProductCard({ product }: ProductCardProps) {
           <ProductCardActions />
         </div>
         <Image
-          src={product.image}
-          alt={product.name}
+          src={product.images[0].url}
+          alt={product.images[0].name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           loading="lazy"
           className="object-cover"
         />
-        {product.withHoverEffect && (
+        {product.images.length > 1 && (
           <Image
-            src={product.hoverImage || product.image}
-            alt={product.name}
+            src={product.images[1].url}
+            alt={product.images[1].name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
@@ -37,10 +37,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       <div className="mt-4">
-        <h3 className="text-sm md:text-base lg:text-lg font-medium mb-1">{product.name}</h3>
+        <h3 className="text-sm md:text-base lg:text-lg font-medium mb-1">
+          {product.name}
+        </h3>
         <ProductPrice
           price={product.price}
-          discountPrice={product.discountPrice}
+          discountPrice={product.discount_price}
         />
       </div>
     </div>

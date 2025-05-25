@@ -11,3 +11,9 @@ export interface ApiError {
   code?: number;
   errors?: Record<string, string[]>;
 }
+
+export type Image = {
+  id: number;
+  name: string;
+  url: string;
+};

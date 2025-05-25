@@ -21,7 +21,7 @@ export default function LogoutButton() {
 
   return (
     <Button className="shadow cursor-pointer" onClick={handleLogout}>
-      {isLoading ? <Loader2 className="animate-spin" /> : "Logout"}
+      {isLoading ? <Loader2 className="animate-spin translate-x-1/2 translate-y-1/2" /> : "Logout"}
     </Button>
   );
 }

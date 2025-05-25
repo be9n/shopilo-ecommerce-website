@@ -63,6 +63,7 @@ export default function GoogleLoginButton({
         setIsSocialLoading(true);
         login();
       }}
+      disabled={isAuthenticating}
     >
       {isAuthenticating ? (
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -1,12 +1,9 @@
+import { Image } from "./global";
+
 export type Product = {
   id: number;
   name: string;
-  image: string;
+  images: Image[];
   price: number;
-  discountPrice?: number;
-};
-
-export type SliderProduct = Product & {
-  withHoverEffect: boolean;
-  hoverImage?: string;
+  discount_price?: number;
 };
