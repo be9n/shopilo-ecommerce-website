@@ -6,7 +6,6 @@ import { getHomePage, HomePageResponse } from "@/api-services/home-page";
 
 export default async function HomePage() {
   const homePageData: HomePageResponse = await getHomePage();
-  console.log(homePageData.best_selling_products);
 
   return (
     <div>

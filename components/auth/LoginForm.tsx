@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { loginSchema, type LoginFormValues } from "@/lib/schemas/auth";
+import { useLoginSchema, type LoginFormValues } from "@/lib/schemas/auth";
 import { useAuth } from "@/context/AuthProvider";
 import { Input } from "../ui/input";
 import {
@@ -20,7 +20,13 @@ import { Loader2 } from "lucide-react";
 import SocialAuthButtons from "./SocialAuthButtons";
 import { ApiError } from "@/types/global";
 
-export default function LoginForm() {
+export default function LoginForm({
+  isRegister = false,
+  setIsRegister,
+}: {
+  isRegister: boolean;
+  setIsRegister: (isRegister: boolean) => void;
+}) {
   const [isSocialLoading, setIsSocialLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signin } = useAuth();
@@ -30,10 +36,11 @@ export default function LoginForm() {
   const callbackUrl = searchParams?.get("callbackUrl") || currentPath;
 
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(useLoginSchema(isRegister)),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
@@ -61,6 +68,29 @@ export default function LoginForm() {
             <Alert variant="destructive" className="p-3">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
+          )}
+
+          {isRegister && (
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field: { value, ...fieldProps } }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Full Name*"
+                      className="shadow-none py-6 px-4"
+                      disabled={isSubmitting || isSocialLoading}
+                      autoComplete="name"
+                      value={value as string}
+                      {...fieldProps}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
           )}
 
           <FormField
@@ -111,23 +141,28 @@ export default function LoginForm() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Logging in...
+                  {isRegister ? "Creating account..." : "Logging in..."}
                 </>
+              ) : isRegister ? (
+                "Create account"
               ) : (
                 "Sign in"
               )}
             </Button>
             <Button
-              type="submit"
+              type="button"
               className="cursor-pointer w-[100%] md:w-[50%] rounded-full py-6
               bg-transparent border border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300"
               disabled={isSubmitting || isSocialLoading}
+              onClick={() => setIsRegister(!isRegister)}
             >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Logging in...
+                  {isRegister ? "Creating account..." : "Logging in..."}
                 </>
+              ) : isRegister ? (
+                "Sign in instead"
               ) : (
                 "Create an account"
               )}

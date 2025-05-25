@@ -10,12 +10,15 @@ import {
 } from "../ui/sheet";
 import { Separator } from "../ui/separator";
 import LoginForm from "./LoginForm";
+import { useState } from "react";
 
 type LoginFormSheetProps = {
   trigger: React.ReactNode;
 };
 
 export default function LoginFormSheet({ trigger }: LoginFormSheetProps) {
+  const [isRegister, setIsRegister] = useState(false);
+
   return (
     <Sheet>
       <SheetTrigger>{trigger}</SheetTrigger>
@@ -26,7 +29,9 @@ export default function LoginFormSheet({ trigger }: LoginFormSheetProps) {
       >
         <SheetHeader>
           <div className="flex justify-between items-center pb-2">
-            <SheetTitle className="text-xl font-medium">Log In</SheetTitle>
+            <SheetTitle className="text-xl font-medium">
+              {isRegister ? "Create Account" : "Log In"}
+            </SheetTitle>
             <SheetDescription>
               <SheetClose asChild>
                 <XIcon
@@ -38,7 +43,7 @@ export default function LoginFormSheet({ trigger }: LoginFormSheetProps) {
           </div>
           <Separator />
         </SheetHeader>
-        <LoginForm />
+        <LoginForm isRegister={isRegister} setIsRegister={setIsRegister} />
       </SheetContent>
     </Sheet>
   );
