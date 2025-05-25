@@ -40,7 +40,7 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: #ff6f61;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #101828;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -80,4 +80,19 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.main-button {
+  @apply cursor-pointer w-[100%] md:w-[50%] rounded-full py-6 bg-secondary 
+  relative hover:bg-secondary overflow-hidden;
+}
+
+.main-button::before {
+  content: "";
+  @apply absolute top-0 end-0 w-full h-full -skew-y-25 opacity-25 
+  bg-gradient-to-br from-transparent from-10% via-white to-90% to-transparent translate-x-full;
+}
+
+.main-button:hover::before {
+  @apply -translate-x-full transition-all duration-1100;
 }

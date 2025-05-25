@@ -21,10 +21,10 @@ export default function LoginFormSheet({ trigger }: LoginFormSheetProps) {
       <SheetTrigger>{trigger}</SheetTrigger>
       <SheetContent
         side="right"
-        className="max-w-[300px]"
+        className="min-w-[340px] max-w-[340px] md:min-w-[450px] bg-white p-4"
         withDefaultCloseButton={false}
       >
-        <SheetHeader className="-mb-3">
+        <SheetHeader>
           <div className="flex justify-between items-center pb-2">
             <SheetTitle className="text-xl font-medium">Log In</SheetTitle>
             <SheetDescription>

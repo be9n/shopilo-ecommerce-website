@@ -101,22 +101,41 @@ export default function LoginForm() {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="w-full cursor-pointer"
-            disabled={isSubmitting || isSocialLoading}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Logging in...
-              </>
-            ) : (
-              "Login"
-            )}
-          </Button>
+
+          <div className="flex flex-col md:flex-row gap-2 max-w-full w-full">
+            <Button
+              type="submit"
+              className="main-button"
+              disabled={isSubmitting || isSocialLoading}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                "Sign in"
+              )}
+            </Button>
+            <Button
+              type="submit"
+              className="cursor-pointer w-[100%] md:w-[50%] rounded-full py-6
+              bg-transparent border border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300"
+              disabled={isSubmitting || isSocialLoading}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                "Create an account"
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
+      <div className="my-5 text-center text-sm">Or sign in with:</div>
       <SocialAuthButtons
         setIsSocialLoading={setIsSocialLoading}
         setError={setError}

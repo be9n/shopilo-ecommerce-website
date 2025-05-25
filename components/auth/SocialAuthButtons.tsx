@@ -9,7 +9,10 @@ export default function SocialAuthButtons({
 }) {
   return (
     <div className="flex flex-col gap-4 w-full mt-4">
-      <GoogleLoginButton setIsSocialLoading={setIsSocialLoading} setError={setError} />
+      <GoogleLoginButton
+        setIsSocialLoading={setIsSocialLoading}
+        setError={setError}
+      />
     </div>
   );
 }

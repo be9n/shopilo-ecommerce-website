@@ -1,13 +1,13 @@
 "use client";
 
 import { useGoogleLogin } from "@react-oauth/google";
-import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthProvider";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "@/i18n/navigation";
 import { ApiError } from "@/types/global";
+import SocialAuthButton from "./SocialAuthButton";
 
 export default function GoogleLoginButton({
   setIsSocialLoading,
@@ -27,7 +27,11 @@ export default function GoogleLoginButton({
     onSuccess: async (tokenResponse) => {
       try {
         setIsAuthenticating(true);
-        await signin({ type: "social", provider: "google", token: tokenResponse.access_token });
+        await signin({
+          type: "social",
+          provider: "google",
+          token: tokenResponse.access_token,
+        });
 
         router.push(decodeURI(callbackUrl));
       } catch (error) {
@@ -50,10 +54,10 @@ export default function GoogleLoginButton({
   });
 
   return (
-    <Button
-      type="button"
-      variant="outline"
-      className="w-full cursor-pointer"
+    <SocialAuthButton
+      isAuthenticating={isAuthenticating}
+      className="bg-secondary text-white hover:text-white 
+      font-light hover:bg-secondary/90 transition-all duration-300"
       onClick={() => {
         setError(null);
         setIsSocialLoading(true);
@@ -65,6 +69,6 @@ export default function GoogleLoginButton({
       ) : (
         "Login with Google"
       )}
-    </Button>
+    </SocialAuthButton>
   );
 }
