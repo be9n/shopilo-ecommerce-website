@@ -140,7 +140,7 @@ export default function LoginForm({
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin translate-x-1/2 translate-y-1/2" />
                   {isRegister ? "Creating account..." : "Logging in..."}
                 </>
               ) : isRegister ? (
@@ -156,16 +156,7 @@ export default function LoginForm({
               disabled={isSubmitting || isSocialLoading}
               onClick={() => setIsRegister(!isRegister)}
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {isRegister ? "Creating account..." : "Logging in..."}
-                </>
-              ) : isRegister ? (
-                "Sign in instead"
-              ) : (
-                "Create an account"
-              )}
+              {isRegister ? "Sign in instead" : "Create an account"}
             </Button>
           </div>
         </form>

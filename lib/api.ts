@@ -4,7 +4,7 @@ import { getAuthToken } from "./auth/server";
 import { ApiError } from "@/types/global";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/customer";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 // Create axios instance with baseURL
 const api = axios.create({
@@ -21,7 +21,6 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const token = await getAuthToken();
-    console.log(API_URL);
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

@@ -8,7 +8,7 @@ export type HomePageResponse = {
 };
 
 export async function getHomePage(): Promise<HomePageResponse> {
-  const { data: response } = await api.get("/home_page");
+  const { data: response } = await api.get("/customer/home_page");
 
   return response.data;
 }

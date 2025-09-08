@@ -8,6 +8,7 @@ import { poppins } from "@/lib/fonts";
 import "@/app/[locale]/css/banners.css";
 import Providers from "@/providers/providers";
 import ServerSideProviders from "@/providers/serverSideProviders";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Shopilo",
@@ -34,7 +35,10 @@ export default async function Layout({
     >
       <body className="flex flex-col min-h-screen relative">
         <ServerSideProviders>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <Toaster richColors position="top-right" />
+          </Providers>
         </ServerSideProviders>
       </body>
     </html>

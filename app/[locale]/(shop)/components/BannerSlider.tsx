@@ -64,12 +64,12 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
             >
               <Container
                 className={cn(
-                  "h-full relative z-50 flex items-center",
+                  "h-full relative z-50 flex items-center justify-center sm:justify-start",
                   banner.textPosition === "right" && "sm:justify-end"
                 )}
               >
                 {/* Text Content - Centered in the banner */}
-                <div className={cn("max-w-[280px] md:max-w-md text-start")}>
+                <div className={cn("max-w-[280px] md:max-w-md text-center sm:text-start")}>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] font-medium mb-2 md:mb-4 banner-content-fade-in banner-content-fade-in-h1">
                     {banner.title}
                   </h1>

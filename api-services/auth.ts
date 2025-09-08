@@ -6,7 +6,7 @@ import { LoginResponse } from "@/types/auth";
 export async function login(
   credentials: LoginFormValues
 ): Promise<LoginResponse> {
-  const { data: response } = await api.post("/auth/login", credentials);
+  const { data: response } = await api.post("/customer/auth/login", credentials);
 
   return response;
 }
@@ -15,7 +15,7 @@ export async function socialLogin(
   provider: string,
   token: string
 ): Promise<LoginResponse> {
-  const { data: response } = await api.get(`/auth/social/${provider}`, {
+  const { data: response } = await api.get(`/customer/auth/social/${provider}`, {
     params: {
       token,
     },
@@ -26,7 +26,7 @@ export async function socialLogin(
 
 export async function logout() {
   try {
-    await api.post("/auth/logout");
+    await api.post("/customer/auth/logout");
   } catch (error) {
     console.error("Logout error:", error);
   } finally {
@@ -35,7 +35,7 @@ export async function logout() {
 }
 
 export async function getUser() {
-  const { data: response } = await api.get("/auth/me");
+  const { data: response } = await api.get("/customer/auth/me");
   
   return response.data.user;
 }
