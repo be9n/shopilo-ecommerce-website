@@ -32,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
             className="relative z-50 opacity-0 object-cover group-hover/card:opacity-100 group-hover/card:scale-105
-            transition-all duration-600"
+            transition-all duration-600 select-none"
           />
         )}
       </div>
