@@ -4,6 +4,8 @@ import { Product } from "@/types/products";
 import Image from "next/image";
 import ProductCardActions from "./ProductCardActions";
 import ProductPrice from "./ProductPrice";
+import { Badge } from "@/components/ui/badge";
+import { formatDiscount } from "@/lib/utils";
 
 type ProductCardProps = {
   product: Product;
@@ -13,6 +15,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="">
       <div className="group/card cursor-pointer aspect-[3/4.3] relative rounded-lg overflow-hidden">
+        {product.discount_price && (
+          <Badge className="absolute top-5 left-5 z-100 text-xs rounded-xl">
+            {formatDiscount(product.discount_value, product.discount_type!)}{" "}
+            Off
+          </Badge>
+        )}
+
         <div className="absolute top-2 right-2 z-100">
           <ProductCardActions />
         </div>

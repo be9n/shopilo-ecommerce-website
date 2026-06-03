@@ -31,7 +31,7 @@ const Price = ({
       className={cn(
         "text-primary text-sm font-medium",
         type === "oldPrice" &&
-          "line-through text-gray-500 text-xs md:text-sm lg:text-base",
+          "line-through text-gray-500/90 text-xs md:text-sm lg:text-base",
         type === "currentPrice" &&
           "text-primary text-sm md:text-base lg:text-md"
       )}
